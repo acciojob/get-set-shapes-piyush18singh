@@ -1,54 +1,65 @@
+// 1. Rectangle Class Definition
 class Rectangle {
-  constructor(width, height) {
-    if (width <= 0 || height <= 0) {
-      throw new Error("Width and height must be positive numbers");
+    constructor(width, height) {
+        this._width = width;
+        this._height = height;
     }
-    this._width = width;
-    this._height = height;
-  }
 
-  // getter for width
-  get width() {
-    return this._width;
-  }
+    // Getter for width
+    get width() {
+        return this._width;
+    }
 
-  // getter for height
-  get height() {
-    return this._height;
-  }
+    // Getter for height
+    get height() {
+        return this._height;
+    }
 
-  // method to calculate area
-  getArea() {
-    return this._width * this._height;
-  }
+    // Method to calculate area
+    getArea() {
+        return this.width * this.height;
+    }
 }
 
+// 2. Square Class Definition (Inherits from Rectangle)
 class Square extends Rectangle {
-  constructor(side) {
-    if (side <= 0) {
-      throw new Error("Side must be a positive number");
+    constructor(side) {
+        // Calls the Rectangle constructor with side as both width and height
+        super(side, side);
     }
-    super(side, side);
-  }
 
-  // method to calculate perimeter
-  getPerimeter() {
-    return 4 * this.width;
-  }
+    // Method specific to Square
+    getPerimeter() {
+        return 4 * this.width;
+    }
 }
 
-/* Make classes global for Cypress tests */
+// --- Testing the Implementation ---
+
+// Create instances
+const rect = new Rectangle(5, 10);
+const sq = new Square(7);
+
+// Function to display results on the HTML page
+const resultsDiv = document.getElementById('results');
+
+resultsDiv.innerHTML = `
+    <div class="shape-result">
+        <strong>Rectangle (5x10)</strong><br>
+        Area: ${rect.getArea()}
+    </div>
+    <div class="shape-result">
+        <strong>Square (Side: 7)</strong><br>
+        Area: ${sq.getArea()}<br>
+        Perimeter: ${sq.getPerimeter()}
+    </div>
+`;
+
+// Also logging to console for debugging
+console.log("Rectangle Width:", rect.width);
+console.log("Square Area:", sq.getArea());
+console.log("Square Perimeter:", sq.getPerimeter());
+
+// Expose to window object for testing frameworks like Cypress
 window.Rectangle = Rectangle;
 window.Square = Square;
-
-/* Example test in console */
-const rectangle = new Rectangle(5, 10);
-console.log(rectangle.width);      // 5
-console.log(rectangle.height);     // 10
-console.log(rectangle.getArea());  // 50
-
-const square = new Square(7);
-console.log(square.width);         // 7
-console.log(square.height);        // 7
-console.log(square.getArea());     // 49
-console.log(square.getPerimeter()); // 28
